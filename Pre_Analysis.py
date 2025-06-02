@@ -1,4 +1,4 @@
-#This code base is meant to calculate savings from efficient lighting FCM projects when meter data is available.
+#This script is meant to calculate savings from efficient lighting FCM projects when meter data is available.
 #Todo below are what needs to be modified when this code is being used for a new project. Please read through them craefully.
 
 import pandas as pd
