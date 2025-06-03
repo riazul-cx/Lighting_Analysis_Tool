@@ -95,7 +95,7 @@ WHF_e = float(input(f"Enter waste heat factor for energy to account for cooling 
 OA = float(input(f"Enter the average percent of the supply air that is Outside Air (OA) from TRM (not in %): "))
 AR = float(input(f"Enter the aspect ratio (AR) factor from TRM (not in %): "))
 HF = float(input(f"Enter the ASHRAE heating factor (HF) from TRM: "))
-DFH = float(input(f"Enter the percent of lighting in heated spaces either from TRM or if known from site visit (DFH): "))
+DFH = float(input(f"Enter the percent of lighting in heated spaces either from TRM or if known from site visit (DFH) (not in %): "))
 Efficiency_heat = float(input(f"Enter the heating system efficiency (not in %): "))
 
 #Now we have all the variables to do out savings analysis finally!
