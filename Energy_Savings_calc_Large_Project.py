@@ -28,6 +28,7 @@ baseline_col = input("Enter column name for Baseline Fixtures No.: ").strip()
 efficient_col = input("Enter column name for Efficient Fixtures No.: ").strip()
 efficient_watt_col = input("Enter column name for Efficient Wattage: ").strip()
 baseline_watt_col = input("Enter column name for Baseline Wattage: ").strip()
+#baseline_hours_col = input("Enter column name for Baseline Annual Hours of Operation: ").strip() #Todo: If baseline hours of op are different from efficient case
 # Overall_cf_col = input("Enter column name for Overall CF (if applicable): ").strip()  #Optional CF from Excel – uncomment if needed
 # Summer_cf_col = input("Enter column name for Summer CF (if applicable): ").strip()  #Optional CF from Excel – uncomment if needed
 # Winter_cf_col = input("Enter column name for Winter CF (if applicable): ").strip()  #Optional CF from Excel – uncomment if needed
@@ -35,12 +36,13 @@ baseline_watt_col = input("Enter column name for Baseline Wattage: ").strip()
 #Creating lighting_df
 lighting_df = df[[space_col, baseline_col, efficient_col, efficient_watt_col, baseline_watt_col]].copy()
 lighting_df.columns = ["Space Type", "Baseline Fixtures", "Efficient Fixtures", "Efficient Wattage", "Baseline Wattage"]
+# lighting_df['Baseline Annual Hours'] = df[baseline_hours_col]  #Todo:Uncomment if baseline hours of op are different
 # lighting_df['Overall CF'] = df[Overall_cf_col]  #Todo:Uncomment if using CF directly from Excel
 # lighting_df['Summer CF'] = df[Summer_cf_col]  #Todo:Uncomment if using CF directly from Excel
 # lighting_df['Winter CF'] = df[Winter_cf_col]  #Todo:Uncomment if using CF directly from Excel
 
 #Merging CFs if they are coming from meter data #Todo: Comment it out if CF is coming from an excel input below.
-#lighting_df = lighting_df.merge(Cf_summary_by_space, how='left', on='Space Type')
+lighting_df = lighting_df.merge(Cf_summary_by_space, how='left', on='Space Type')
 
 #Prompt for CFs if any are missing #Todo: Best case is check your excel file to make sure no CFs are missing
 for i, row in lighting_df[lighting_df['Overall CF'].isna()].iterrows():
@@ -70,8 +72,12 @@ Efficiency_heat = float(input("Enter heating system efficiency (not in %): "))
 #Now we have all the variables to do out savings analysis finally!
 lighting_df['Annual Hours'] = lighting_df['Overall CF'] * 8760
 
+#Todo: Below kWh savings equation is if both baseline and efficient case have same hours of operation
 lighting_df['Energy Savings (kWh)'] = round(((lighting_df['Baseline Fixtures'] * lighting_df['Baseline Wattage']) -(lighting_df['Efficient Fixtures'] * lighting_df['Efficient Wattage']))/1000*
                                             lighting_df['Annual Hours'] * WHF_e, 3)
+
+#Todo: Below kWh savings equation is if baseline and efficient case have different hours of operation
+#lighting_df['Energy Savings (kWh)'] = round(((lighting_df['Baseline Fixtures'] * lighting_df['Baseline Wattage'] * lighting_df['Baseline Annual Hours']) -(lighting_df['Efficient Fixtures'] * lighting_df['Efficient Wattage'] * lighting_df['Annual Hours']))/1000 * WHF_e, 3)
 
 lighting_df['Summer Demand Savings (kW)'] = round(((lighting_df['Baseline Fixtures'] * lighting_df['Baseline Wattage']) - (lighting_df['Efficient Fixtures'] * lighting_df['Efficient Wattage']))/1000*
     lighting_df['Summer CF'] * WHF_d, 3)
