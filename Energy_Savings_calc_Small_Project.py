@@ -108,7 +108,7 @@ lighting_df['Energy Savings (kWh)'] = round(((lighting_df['Baseline Fixtures']*l
 #lighting_df['Energy Savings (kWh)'] = round(((lighting_df['Baseline Fixtures'] * lighting_df['Baseline Wattage'] * lighting_df['Baseline Annual Hours']) -(lighting_df['Efficient Fixtures'] * lighting_df['Efficient Wattage'] * lighting_df['Annual Hours']))/1000 * WHF_e, 3)
 
 lighting_df['Summer Demand Savings (kW)'] = round(((lighting_df['Baseline Fixtures']*lighting_df['Baseline Wattage'])-(lighting_df['Efficient Fixtures']*lighting_df['Efficient Wattage']))/1000*lighting_df['Summer CF']*WHF_d, 3)
-lighting_df['Winter Demand Savings (kW)'] = round(((lighting_df['Baseline Fixtures']*lighting_df['Baseline Wattage'])-(lighting_df['Efficient Fixtures']*lighting_df['Efficient Wattage']))/1000*lighting_df['Winter CF']*WHF_d, 3)
+lighting_df['Winter Demand Savings (kW)'] = round(((lighting_df['Baseline Fixtures']*lighting_df['Baseline Wattage'])-(lighting_df['Efficient Fixtures']*lighting_df['Efficient Wattage']))/1000*lighting_df['Winter CF'], 3)
 lighting_df['Natural Gas Savings (MMBtu)'] = round((lighting_df['Energy Savings (kWh)']/WHF_e)*0.003412*(1-OA)*AR*HF*DFH/Efficiency_heat, 3)
 
 #Save Results of Analysis
@@ -118,4 +118,5 @@ output_dir = Path(output_dir_input)
 output_dir.mkdir(parents=True, exist_ok=True) #Ensure the directory exists
 lighting_df.to_csv(output_dir / "Lighting Analysis.csv", index=False)
 print("\nLighting Analysis saved to: {output_dir / 'Lighting Analysis.csv'}.")
+
 
